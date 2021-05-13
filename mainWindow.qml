@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
+import QtQuick.Layouts 1.1
 
 ApplicationWindow {
     id: win
@@ -14,19 +15,39 @@ ApplicationWindow {
 
     title: "Image to pdf converter"
 
-    Button {
-        id: btnConvertAll
-        text: "Convert All"
+    Row{//кнопки Add и Delete
+        spacing: 5
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.bottomMargin: 5
+        Button {
+            text: "Add image"
+            width: 130
+            height: 50
+            onClicked: {
+                actions.addImg()
+            }
+        }
+        Button {
+            text: "Delete image"
+            width: 130
+            height: 50
+            onClicked: {
+                actions.deleteImg()
+            }
+        }
+    }
+    Button {//кнопка конвертации
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.bottomMargin: 5
+        text: "Convert"
         width: 130
         height: 50
-
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.rightMargin: 5
-        anchors.bottomMargin: 5
-
         onClicked: {
-            actions.converAll()
+            actions.convert()
         }
     }
 

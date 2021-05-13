@@ -3,12 +3,21 @@ from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QStringListModel
 
+
 class Actions(QObject):
     def __init__(self):
         QObject.__init__(self)
-    
+
     @pyqtSlot()
-    def converAll(self):
+    def convert(self):
+        pass
+
+    @pyqtSlot()
+    def addImg(self):
+        pass
+
+    @pyqtSlot()
+    def deleteImg(self):
         pass
 
     @pyqtSlot(result=str)
@@ -45,18 +54,18 @@ class Actions(QObject):
     _imgIndex = 0
     _listOfImg = []
     _noImgStr = "Images/no-image.png"
-   
 
-if __name__ == "__main__": 
+
+if __name__ == "__main__":
     sys_argv = sys.argv
     sys_argv += ['--style', 'material']
     app = QGuiApplication(sys_argv)
     app.setWindowIcon(QIcon("Images/icon.png"))
-    
+
     engine = QQmlApplicationEngine()
 
     actions = Actions()
-    actions.addToListOfImg(["1.png", "2.png", "3.png"])
+    actions.addToListOfImg(["Images/1.png", "Images/2.png", "Images/3.png"])
 
     engine.rootContext().setContextProperty("actions", actions)
     engine.load("mainWindow.qml")
