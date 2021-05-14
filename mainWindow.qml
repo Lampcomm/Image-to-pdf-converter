@@ -26,7 +26,7 @@ ApplicationWindow {
             width: 130
             height: 50
             onClicked: {
-                actions.addImg()
+                img.source = actions.addImg()
             }
         }
         Button {
@@ -34,7 +34,7 @@ ApplicationWindow {
             width: 130
             height: 50
             onClicked: {
-                actions.deleteImg()
+                img.source = actions.deleteImg()
             }
         }
     }
@@ -64,7 +64,7 @@ ApplicationWindow {
         anchors.topMargin: 5
 
         Text {
-            text: "Selcet an image"
+            text: "Select an image"
             anchors.centerIn: parent
             color: "white"
             font.pixelSize: 20
