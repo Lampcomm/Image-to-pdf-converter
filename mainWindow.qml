@@ -51,6 +51,7 @@ ApplicationWindow {
         }
     }
 
+    //Текущие отображаемое изображение
     Image {
         property color btnColor: Qt.rgba(26 / 255, 29 / 255, 50 / 255, 0.3)
 
@@ -63,16 +64,37 @@ ApplicationWindow {
         anchors.leftMargin: 5
         anchors.topMargin: 5
 
-        Text {
-            text: "Selcet an image"
-            anchors.centerIn: parent
-            color: "white"
-            font.pixelSize: 20
-            z: -1
+        DropArea {
+            id: dropArea
+
+            anchors.fill: parent
+            keys: ["text/uri-list"]
+
+            // Проверка списка url ссылок на то, что они являются изображениями
+            function isImgList(drop) {
+                drop.accepted = false;
+                if (actions.isImgList(Array.from(drop.urls))) {
+                    drop.accepted = true;
+                }
+            }
+
+            onDropped: (drop) => {
+                actions.dropEvent(Array.from(drop.urls));
+                img.source = actions.getCurImg();
+            }
+
+            onEntered: (drop) => {
+                isImgList(drop);
+            }
+
+            onPositionChanged: (drop) => {
+                isImgList(drop);
+            }
         }
 
         source: actions.getCurImg()
 
+        // Кнопка переключения на следующее изображение
         Rectangle {
             id: nextImgBtn
 
@@ -102,6 +124,7 @@ ApplicationWindow {
             }
         }
 
+        // Кнопка переключения на предыдущие изображение
         Rectangle {
             id: prevImgBtn
 
