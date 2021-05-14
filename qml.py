@@ -4,11 +4,8 @@ import imghdr
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
-from PIL import Image
 from urllib.request import urlopen
-import pathlib
 
-# Класс с функциями, вызываемыми из qml
 class Actions(QObject):
     def __init__(self):
         QObject.__init__(self)
@@ -17,13 +14,30 @@ class Actions(QObject):
     def convert(self):
         pass
 
-    @pyqtSlot()
+    @pyqtSlot(result=str)
     def addImg(self):
         pass
+        # input_file = easygui.fileopenbox("Add image", "Converter", filetypes=["*.png"])
+        # input_file.replace('\\', '/')
+        # print(input_file)
+        # # self._listOfImg.append("Images\\1.png")
+        # self._listOfImg += ["Images/1.png", "Images/2.png", "Images/3.png"]
+        # # self._listOfImg.append(input_file)
+        # return self._listOfImg[self._imgIndex]
 
-    @pyqtSlot()
+    @pyqtSlot(result=str)
     def deleteImg(self):
-        pass
+        if len(self._listOfImg) > 0:
+            self._listOfImg.pop(self._imgIndex)
+            self._imgIndex -= 1
+            if self._imgIndex < 0:
+                self._imgIndex = len(self._listOfImg) - 1
+            if len(self._listOfImg) == 0:
+                return self._noImgStr
+            else:
+                return self._listOfImg[self._imgIndex]
+        else:
+            return self._noImgStr
 
     # Получение следующего изображения из списка
     @pyqtSlot(result=str)
@@ -72,6 +86,7 @@ class Actions(QObject):
                 return False
         return True
 
+    # Добавление списка изображение к текущему списку изображений
     def addToListOfImg(self, listOfImg):
         self._listOfImg += listOfImg
 
@@ -94,6 +109,7 @@ if __name__ == "__main__":
     engine = QQmlApplicationEngine()
 
     actions = Actions()
+    actions.addToListOfImg(["Images/1.png", "Images/2.png", "Images/3.png"])
 
     engine.rootContext().setContextProperty("actions", actions)
     engine.rootContext().setContextProperty("appPath", os.getcwd())

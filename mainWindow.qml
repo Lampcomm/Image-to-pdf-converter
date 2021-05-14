@@ -28,7 +28,7 @@ ApplicationWindow {
             width: 130
             height: 50
             onClicked: {
-                actions.addImg()
+                img.source = actions.addImg()
             }
         }
         Button {
@@ -36,7 +36,7 @@ ApplicationWindow {
             width: 130
             height: 50
             onClicked: {
-                actions.deleteImg()
+                img.source = actions.deleteImg()
             }
         }
     }
