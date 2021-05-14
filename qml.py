@@ -1,9 +1,12 @@
+import os
 import sys
 import imghdr
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QStringListModel, QUrl
-
+from PyQt5.QtCore import QObject, pyqtSlot, QUrl
+from PIL import Image
+from urllib.request import urlopen
+import pathlib
 
 # Класс с функциями, вызываемыми из qml
 class Actions(QObject):
@@ -56,10 +59,7 @@ class Actions(QObject):
     # Добавление изображений в список выбранных изображений при их перетаскивание
     @pyqtSlot(list)
     def dropEvent(self, urlsList):
-        for i in urlsList:
-            url = QUrl()
-            url.setUrl(i)
-            self._listOfImg.append(url.toLocalFile())
+        self.addToListOfImg(urlsList)
 
     # Проверка списка url ссылок на то, что они являются изображениями
     @pyqtSlot(list, result=bool)
@@ -68,9 +68,7 @@ class Actions(QObject):
             if i is None:
                 continue
 
-            url = QUrl()
-            url.setUrl(i)
-            if not url.isLocalFile() or imghdr.what(url.toLocalFile()) is None:
+            if imghdr.what(None, urlopen(i).read()) is None:
                 return False
         return True
 
@@ -96,9 +94,9 @@ if __name__ == "__main__":
     engine = QQmlApplicationEngine()
 
     actions = Actions()
-    # actions.addToListOfImg(["Images/1.png", "Images/2.png", "Images/3.png"])
 
     engine.rootContext().setContextProperty("actions", actions)
+    engine.rootContext().setContextProperty("appPath", os.getcwd())
     engine.load("mainWindow.qml")
 
     engine.quit.connect(app.quit)
