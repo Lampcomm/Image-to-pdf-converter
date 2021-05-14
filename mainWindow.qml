@@ -12,6 +12,8 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
+    minimumWidth: 640
+    minimumHeight: 480
 
     title: "Image to pdf converter"
 
