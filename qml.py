@@ -1,6 +1,8 @@
 import os
 import sys
 import imghdr
+import easygui
+import pathlib
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
@@ -14,16 +16,11 @@ class Actions(QObject):
     def convert(self):
         pass
 
-    @pyqtSlot(result=str)
+    @pyqtSlot()
     def addImg(self):
-        pass
-        # input_file = easygui.fileopenbox("Add image", "Converter", filetypes=["*.png"])
-        # input_file.replace('\\', '/')
-        # print(input_file)
-        # # self._listOfImg.append("Images\\1.png")
-        # self._listOfImg += ["Images/1.png", "Images/2.png", "Images/3.png"]
-        # # self._listOfImg.append(input_file)
-        # return self._listOfImg[self._imgIndex]
+        input_file = easygui.fileopenbox("Add image", "Converter", filetypes=["*.png"], multiple=True)
+        for i in input_file:
+            self._listOfImg.append(pathlib.Path(i).as_uri())
 
     @pyqtSlot(result=str)
     def deleteImg(self):
@@ -109,12 +106,10 @@ if __name__ == "__main__":
     engine = QQmlApplicationEngine()
 
     actions = Actions()
-    actions.addToListOfImg(["Images/1.png", "Images/2.png", "Images/3.png"])
+    # actions.addToListOfImg(["Images/1.png", "Images/2.png", "Images/3.png"])
 
     engine.rootContext().setContextProperty("actions", actions)
     engine.rootContext().setContextProperty("appPath", os.getcwd())
     engine.load("mainWindow.qml")
-
     engine.quit.connect(app.quit)
-
     sys.exit(app.exec_())

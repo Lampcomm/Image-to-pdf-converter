@@ -28,7 +28,8 @@ ApplicationWindow {
             width: 130
             height: 50
             onClicked: {
-                img.source = actions.addImg()
+//                img.source =
+                actions.addImg()
             }
         }
         Button {
