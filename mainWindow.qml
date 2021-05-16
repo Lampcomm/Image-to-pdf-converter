@@ -42,7 +42,9 @@ ApplicationWindow {
             }
         }
     }
-    Button {//кнопка конвертации
+
+    //кнопка конвертации
+    Button {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.rightMargin: 10
@@ -51,7 +53,12 @@ ApplicationWindow {
         width: 130
         height: 50
         onClicked: {
-            fileDialog.open()
+            if (actions.checkListOfImg()) {
+                fileDialog.open()
+            }
+            else {
+                messageDialog.open()
+            }
         }
     }
 
@@ -169,5 +176,14 @@ ApplicationWindow {
         onAccepted: {
             actions.convert(fileDialog.fileUrl)
         }
+    }
+
+    // Окно ошибки, появляющиеся, если кнопка "convert" нажата, а изображения не выбраны
+    MessageDialog {
+        id: messageDialog
+        title: "Error!"
+        text: "You have not selected images to convert."
+        icon: StandardIcon.Critical
+        standardButtons: StandardButton.Cancel
     }
 }

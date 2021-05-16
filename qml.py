@@ -16,23 +16,22 @@ class Actions(QObject):
     # Конвертация выбранных изображений в pdf
     @pyqtSlot(str)
     def convert(self, pathToFile):
-        if self._listOfImg:
-            pathToFile = QUrl(pathToFile).toLocalFile()
-            images = []
-            for i in self._listOfImg:
-                url = QUrl()
-                url.setUrl(i)
+        pathToFile = QUrl(pathToFile).toLocalFile()
+        images = []
+        for i in self._listOfImg:
+            url = QUrl()
+            url.setUrl(i)
 
-                if url.isLocalFile():
-                    img = Image.open(url.toLocalFile())
-                else:
-                    img = Image.open(urlopen(i))
+            if url.isLocalFile():
+                img = Image.open(url.toLocalFile())
+            else:
+                img = Image.open(urlopen(i))
 
-                if img.mode == "RGBA":
-                    img = img.convert('RGB')
-                images.append(img)
+            if img.mode == "RGBA":
+                img = img.convert('RGB')
+            images.append(img)
 
-            images.pop(0).save(pathToFile, "PDF", append_images=images, save_all=True)
+        images.pop(0).save(pathToFile, "PDF", append_images=images, save_all=True)
 
 
     @pyqtSlot()
@@ -103,6 +102,14 @@ class Actions(QObject):
                 return False
         return True
 
+    # Проверка списка изображений на наличие в нем элементов
+    @pyqtSlot(result=bool)
+    def checkListOfImg(self):
+        if self._listOfImg:
+            return True
+        else:
+            return False
+
     # Добавление списка изображение к текущему списку изображений
     def addToListOfImg(self, listOfImg):
         self._listOfImg += listOfImg
@@ -118,10 +125,6 @@ class Actions(QObject):
 
 
 if __name__ == "__main__":
-    # img = Image.open(r"D:\Users\dAxeponb\Pictures\IhxKCtQSRgnFYdWx.png")
-    # img = img.convert('RGB')
-    # img.save("test.pdf", "PDF", append_images=[], save_all=True)
-
     sys_argv = sys.argv
     sys_argv += ['--style', 'material']
     app = QGuiApplication(sys_argv)
@@ -133,7 +136,6 @@ if __name__ == "__main__":
     # actions.addToListOfImg(["Images/1.png", "Images/2.png", "Images/3.png"])
 
     engine.rootContext().setContextProperty("actions", actions)
-    engine.rootContext().setContextProperty("appPath", os.getcwd())
     engine.load("mainWindow.qml")
     engine.quit.connect(app.quit)
     sys.exit(app.exec_())
