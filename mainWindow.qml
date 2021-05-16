@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.3
 
 ApplicationWindow {
     id: win
@@ -50,7 +51,7 @@ ApplicationWindow {
         width: 130
         height: 50
         onClicked: {
-            actions.convert()
+            fileDialog.open()
         }
     }
 
@@ -168,6 +169,19 @@ ApplicationWindow {
                     img.source = actions.getPrevImg()
                 }
             }
+        }
+    }
+
+    // Диалог сохранения файла в формате pdf
+    FileDialog {
+        id: fileDialog
+        title: "Save as pdf"
+        folder: shortcuts.documents
+        selectExisting: false
+        nameFilters: ["pdf (*.pdf)"]
+
+        onAccepted: {
+            actions.convert(fileDialog.fileUrl)
         }
     }
 }

@@ -3,6 +3,7 @@ import sys
 import imghdr
 import easygui
 import pathlib
+from PIL import Image
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
@@ -12,9 +13,27 @@ class Actions(QObject):
     def __init__(self):
         QObject.__init__(self)
 
-    @pyqtSlot()
-    def convert(self):
-        pass
+    # Конвертация выбранных изображений в pdf
+    @pyqtSlot(str)
+    def convert(self, pathToFile):
+        if self._listOfImg:
+            pathToFile = QUrl(pathToFile).toLocalFile()
+            images = []
+            for i in self._listOfImg:
+                url = QUrl()
+                url.setUrl(i)
+
+                if url.isLocalFile():
+                    img = Image.open(url.toLocalFile())
+                else:
+                    img = Image.open(urlopen(i))
+
+                if img.mode == "RGBA":
+                    img = img.convert('RGB')
+                images.append(img)
+
+            images.pop(0).save(pathToFile, "PDF", append_images=images, save_all=True)
+
 
     @pyqtSlot()
     def addImg(self):
@@ -72,7 +91,6 @@ class Actions(QObject):
     def dropEvent(self, urlsList):
         self.addToListOfImg(urlsList)
         self._imgIndex = len(self._listOfImg) - 1
-        print(self._listOfImg)
 
     # Проверка списка url ссылок на то, что они являются изображениями
     @pyqtSlot(list, result=bool)
@@ -100,6 +118,10 @@ class Actions(QObject):
 
 
 if __name__ == "__main__":
+    # img = Image.open(r"D:\Users\dAxeponb\Pictures\IhxKCtQSRgnFYdWx.png")
+    # img = img.convert('RGB')
+    # img.save("test.pdf", "PDF", append_images=[], save_all=True)
+
     sys_argv = sys.argv
     sys_argv += ['--style', 'material']
     app = QGuiApplication(sys_argv)
