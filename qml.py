@@ -71,6 +71,8 @@ class Actions(QObject):
     @pyqtSlot(list)
     def dropEvent(self, urlsList):
         self.addToListOfImg(urlsList)
+        self._imgIndex = len(self._listOfImg) - 1
+        print(self._listOfImg)
 
     # Проверка списка url ссылок на то, что они являются изображениями
     @pyqtSlot(list, result=bool)
