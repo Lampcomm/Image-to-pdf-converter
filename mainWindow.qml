@@ -55,21 +55,6 @@ ApplicationWindow {
         }
     }
 
-    // Изображение, отображаемое по умолчанию
-    Image {
-        id: imgDefault
-        width: parent.width - 10
-        height: parent.height - 100
-
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.leftMargin: 5
-        anchors.topMargin: 5
-
-        source: Qt.resolvedUrl(appPath + "/Images/no-image.png")
-        z: 0
-    }
-
     //Текущие отображаемое изображение
     Image {
         property color btnColor: Qt.rgba(26 / 255, 29 / 255, 50 / 255, 0.3)
@@ -82,7 +67,8 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.leftMargin: 5
         anchors.topMargin: 5
-        z: 1
+
+        source: actions.getCurImg()
 
         DropArea {
             id: dropArea
