@@ -1,15 +1,10 @@
-import os
 import sys
 import imghdr
-import easygui
-import pathlib
 from PIL import Image
 from PyQt5.QtGui import QGuiApplication, QIcon
 from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 from urllib.request import urlopen
-
-from PyQt5.QtWidgets import QFileDialog
 
 
 class Actions(QObject):
@@ -135,7 +130,6 @@ if __name__ == "__main__":
     engine = QQmlApplicationEngine()
 
     actions = Actions()
-    # actions.addToListOfImg(["Images/1.png", "Images/2.png", "Images/3.png"])
     engine.rootContext().setContextProperty("actions", actions)
     engine.load("mainWindow.qml")
     engine.quit.connect(app.quit)
