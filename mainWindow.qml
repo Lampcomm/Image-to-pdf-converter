@@ -25,8 +25,8 @@ ApplicationWindow {
         folder: shortcuts.pictures
         selectMultiple: true
         onAccepted: {
-//            actions.convert(Array.from(openFiles.fileUrls))
-            action.addImg(openFiles.fileUrls)
+            actions.addImg(Array.from(openFiles.fileUrls))
+            img.source = actions.getCurImg();
         }
     }
 

@@ -37,11 +37,10 @@ class Actions(QObject):
         images.pop(0).save(pathToFile, "PDF", append_images=images, save_all=True)
 
 
-    @pyqtSlot()
+    @pyqtSlot(list)
     def addImg(self, urlsList):
+        self.addToListOfImg(urlsList)
         self._imgIndex = len(self._listOfImg) - 1
-        self._listOfImg.append(urlsList)
-        exit(0)
 
     @pyqtSlot(result=str)
     def deleteImg(self):
