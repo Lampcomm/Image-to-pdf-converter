@@ -9,6 +9,9 @@ from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 from urllib.request import urlopen
 
+from PyQt5.QtWidgets import QFileDialog
+
+
 class Actions(QObject):
     def __init__(self):
         QObject.__init__(self)
@@ -36,9 +39,11 @@ class Actions(QObject):
 
     @pyqtSlot()
     def addImg(self):
-        input_file = easygui.fileopenbox("Add image", "Converter", filetypes=["*.png"], multiple=True)
-        for i in input_file:
-            self._listOfImg.append(pathlib.Path(i).as_uri())
+        files, _ = QFileDialog.getOpenFileNames(self, "Выбрать файлы", "*.png")
+        # input_file = easygui.fileopenbox("Add image", "Converter", filetypes=["*.png"], multiple=True)
+        # if len(input_file) > 0:
+        #     for i in input_file:
+        #         self._listOfImg.append(pathlib.Path(i).as_uri())
 
     @pyqtSlot(result=str)
     def deleteImg(self):
@@ -134,7 +139,6 @@ if __name__ == "__main__":
 
     actions = Actions()
     # actions.addToListOfImg(["Images/1.png", "Images/2.png", "Images/3.png"])
-
     engine.rootContext().setContextProperty("actions", actions)
     engine.load("mainWindow.qml")
     engine.quit.connect(app.quit)

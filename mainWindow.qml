@@ -1,8 +1,8 @@
-import QtQuick 2.15
+import QtQuick 2.2
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.3
+import QtQuick.Dialogs 1.0
 
 ApplicationWindow {
     id: win
@@ -18,6 +18,19 @@ ApplicationWindow {
 
     title: "Image to pdf converter"
 
+    FileDialog {
+        id: openFiles
+        title: "Add image"
+        nameFilters: ["PNG files(*.png)", "JPEG files(*.jpeg)", "JPG files(*.jpg)"]
+        selectExisting: false
+        folder: shortcuts.pictures
+        selectMultiple: true
+
+        onAccepted: {
+            actions.convert(Array.from(openFiles.fileUrls))
+        }
+    }
+
     Row{//кнопки Add и Delete
         spacing: 5
         anchors.bottom: parent.bottom
@@ -30,7 +43,8 @@ ApplicationWindow {
             height: 50
             onClicked: {
 //                img.source =
-                actions.addImg()
+//                actions.addImg()
+                openFiles.open()
             }
         }
         Button {
@@ -42,9 +56,7 @@ ApplicationWindow {
             }
         }
     }
-
-    //кнопка конвертации
-    Button {
+    Button {//кнопка конвертации
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.rightMargin: 10
@@ -53,13 +65,23 @@ ApplicationWindow {
         width: 130
         height: 50
         onClicked: {
-            if (actions.checkListOfImg()) {
-                fileDialog.open()
-            }
-            else {
-                messageDialog.open()
-            }
+            actions.convert()
         }
+    }
+
+    // Изображение, отображаемое по умолчанию
+    Image {
+        id: imgDefault
+        width: parent.width - 10
+        height: parent.height - 100
+
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.leftMargin: 5
+        anchors.topMargin: 5
+
+        source: Qt.resolvedUrl(appPath + "/Images/no-image.png")
+        z: 0
     }
 
     //Текущие отображаемое изображение
@@ -74,8 +96,7 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.leftMargin: 5
         anchors.topMargin: 5
-
-        source: actions.getCurImg()
+        z: 1
 
         DropArea {
             id: dropArea
@@ -163,27 +184,5 @@ ApplicationWindow {
                 }
             }
         }
-    }
-
-    // Диалог сохранения файла в формате pdf
-    FileDialog {
-        id: fileDialog
-        title: "Save as pdf"
-        folder: shortcuts.documents
-        selectExisting: false
-        nameFilters: ["pdf (*.pdf)"]
-
-        onAccepted: {
-            actions.convert(fileDialog.fileUrl)
-        }
-    }
-
-    // Окно ошибки, появляющиеся, если кнопка "convert" нажата, а изображения не выбраны
-    MessageDialog {
-        id: messageDialog
-        title: "Error!"
-        text: "You have not selected images to convert."
-        icon: StandardIcon.Critical
-        standardButtons: StandardButton.Cancel
     }
 }
