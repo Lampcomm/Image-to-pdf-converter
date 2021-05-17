@@ -21,7 +21,7 @@ ApplicationWindow {
     FileDialog {// окно проводника для  выбора изображений
         id: openFiles
         title: "Converter - Add image"
-        nameFilters: ["Image files (*.png *.jpg *.jpeg)"]
+        nameFilters: ["Image files (*.png *.jpg *.jpeg *.gif)"]
         folder: shortcuts.pictures
         selectMultiple: true
         onAccepted: {
