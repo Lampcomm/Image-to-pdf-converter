@@ -38,12 +38,10 @@ class Actions(QObject):
 
 
     @pyqtSlot()
-    def addImg(self):
-        files, _ = QFileDialog.getOpenFileNames(self, "Выбрать файлы", "*.png")
-        # input_file = easygui.fileopenbox("Add image", "Converter", filetypes=["*.png"], multiple=True)
-        # if len(input_file) > 0:
-        #     for i in input_file:
-        #         self._listOfImg.append(pathlib.Path(i).as_uri())
+    def addImg(self, urlsList):
+        self._imgIndex = len(self._listOfImg) - 1
+        self._listOfImg.append(urlsList)
+        exit(0)
 
     @pyqtSlot(result=str)
     def deleteImg(self):

@@ -18,16 +18,15 @@ ApplicationWindow {
 
     title: "Image to pdf converter"
 
-    FileDialog {
+    FileDialog {// окно проводника для  выбора изображений
         id: openFiles
-        title: "Add image"
-        nameFilters: ["PNG files(*.png)", "JPEG files(*.jpeg)", "JPG files(*.jpg)"]
-        selectExisting: false
+        title: "Converter - Add image"
+        nameFilters: ["Image files (*.png *.jpg *.jpeg)"]
         folder: shortcuts.pictures
         selectMultiple: true
-
         onAccepted: {
-            actions.convert(Array.from(openFiles.fileUrls))
+//            actions.convert(Array.from(openFiles.fileUrls))
+            action.addImg(openFiles.fileUrls)
         }
     }
 
@@ -42,8 +41,6 @@ ApplicationWindow {
             width: 130
             height: 50
             onClicked: {
-//                img.source =
-//                actions.addImg()
                 openFiles.open()
             }
         }
