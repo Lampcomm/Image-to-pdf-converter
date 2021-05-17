@@ -18,7 +18,8 @@ ApplicationWindow {
 
     title: "Image to pdf converter"
 
-    FileDialog {// окно проводника для  выбора изображений
+    // окно проводника для  выбора изображений
+    FileDialog {
         id: openFiles
         title: "Converter - Add image"
         nameFilters: ["Image files (*.png *.jpg *.jpeg *.gif)"]
@@ -30,7 +31,8 @@ ApplicationWindow {
         }
     }
 
-    Row{//кнопки Add и Delete
+    //кнопки Add и Delete
+    Row{
         spacing: 5
         anchors.bottom: parent.bottom
         anchors.left: parent.left

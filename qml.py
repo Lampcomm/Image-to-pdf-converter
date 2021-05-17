@@ -31,12 +31,13 @@ class Actions(QObject):
 
         images.pop(0).save(pathToFile, "PDF", append_images=images, save_all=True)
 
-
+    # Добавление нового изображения/списка изображений
     @pyqtSlot(list)
     def addImg(self, urlsList):
         self.addToListOfImg(urlsList)
         self._imgIndex = len(self._listOfImg) - 1
 
+    # Удаление текущего изображения
     @pyqtSlot(result=str)
     def deleteImg(self):
         if len(self._listOfImg) > 0:
