@@ -2,7 +2,7 @@ import QtQuick 2.2
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.3
 
 ApplicationWindow {
     id: win
@@ -53,7 +53,9 @@ ApplicationWindow {
             }
         }
     }
-    Button {//кнопка конвертации
+
+    //кнопка конвертации
+    Button {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.rightMargin: 10
@@ -62,23 +64,13 @@ ApplicationWindow {
         width: 130
         height: 50
         onClicked: {
-            actions.convert()
+            if (actions.checkListOfImg()) {
+                fileDialog.open()
+            }
+            else {
+                messageDialog.open()
+            }
         }
-    }
-
-    // Изображение, отображаемое по умолчанию
-    Image {
-        id: imgDefault
-        width: parent.width - 10
-        height: parent.height - 100
-
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.leftMargin: 5
-        anchors.topMargin: 5
-
-        source: Qt.resolvedUrl(appPath + "/Images/no-image.png")
-        z: 0
     }
 
     //Текущие отображаемое изображение
@@ -93,7 +85,7 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.leftMargin: 5
         anchors.topMargin: 5
-        z: 1
+        source: actions.getCurImg()
 
         DropArea {
             id: dropArea
@@ -181,5 +173,27 @@ ApplicationWindow {
                 }
             }
         }
+    }
+
+    // Диалог сохранения файла в формате pdf
+    FileDialog {
+        id: fileDialog
+        title: "Save as pdf"
+        folder: shortcuts.documents
+        selectExisting: false
+        nameFilters: ["pdf (*.pdf)"]
+
+        onAccepted: {
+            actions.convert(fileDialog.fileUrl)
+        }
+    }
+
+    // Окно ошибки, появляющиеся, если кнопка "convert" нажата, а изображения не выбраны
+    MessageDialog {
+        id: messageDialog
+        title: "Error!"
+        text: "You have not selected images to convert."
+        icon: StandardIcon.Critical
+        standardButtons: StandardButton.Cancel
     }
 }
