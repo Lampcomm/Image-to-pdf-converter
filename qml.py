@@ -6,7 +6,7 @@ from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 from urllib.request import urlopen
 
-
+# Класс связи qml и python
 class Actions(QObject):
     def __init__(self):
         QObject.__init__(self)
